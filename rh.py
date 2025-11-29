@@ -9,3 +9,16 @@ def calcular_inss(salario_bruto):
     else:
         desconto = salario_bruto * 0.14
         return min(desconto, 908.85) # Teto do INSS
+    
+def calcular_ir(base_calculo):
+    """Calcula o desconto do IR baseado na tabela progressiva de 2025"""
+    if base_calculo <= 2259.20:
+        return 0.0
+    elif base_calculo <= 2826.65:
+        return (base_calculo * 0.075) - 169.44
+    elif base_calculo <= 3751.05:
+        return (base_calculo * 0.15) - 381.44
+    elif base_calculo <= 4664.68:
+        return (base_calculo * 0.225) - 662.77
+    else:
+        return (base_calculo * 0.275) - 896.00
