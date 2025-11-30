@@ -32,8 +32,8 @@ def cadastrar_produto(db_session):
         # ====================================================================
         # PASSO 2.1: COLETAR DADOS BÁSICOS (CÓDIGO, NOME, QUANTIDADE)
         # ====================================================================
-        
         try:
+    
             codigo = int(input(" Código do produto: "))
             nome = input(" Nome do produto: ").strip()
             
@@ -86,8 +86,8 @@ def cadastrar_produto(db_session):
             except ValueError:
                 print(" Valor inválido! Usando R$ 0,00")
                 valor = 0.0
-
-           # ================================================================
+                
+             # ================================================================
             # CRIAR O OBJETO DO PRODUTO
             # ================================================================
             novo_produto = Produto(
@@ -109,3 +109,48 @@ def cadastrar_produto(db_session):
             print(f"   Nome: {nome}")
             print(f"   Quantidade: {quantidade_nova} unidades")
             print(f"   Valor: R$ {valor:.2f}")
+            
+    # ========================================================================
+    # PASSO 3: EXIBIR RESUMO DO ESTOQUE
+    # ========================================================================
+    listar_estoque(db_session)
+
+
+def listar_estoque(db_session):
+    """
+    Função auxiliar para listar todos os produtos em estoque.
+    
+    Parâmetros:
+    -----------
+    db_session : Session
+        Sessão do banco de dados
+    """
+    produtos = db_session.query(Produto).all()
+    
+    if not produtos:
+        print("\n  Estoque vazio! Nenhum produto cadastrado.")
+        return
+    
+    print("\n" + "="*50)
+    print("   LISTA COMPLETA DE PRODUTOS")
+    print("="*50)
+    print(f" Total de produtos diferentes: {len(produtos)}")
+    
+    total_itens = sum(p.quantidade for p in produtos)
+    print(f" Total de itens em estoque: {total_itens} unidades")
+    
+    valor_total = sum(p.quantidade * p.valor for p in produtos)
+    print(f" Valor total do estoque: R$ {valor_total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print("="*50)
+    
+    for i, produto in enumerate(produtos, 1):
+        print(f"\n{i}. {produto.nome}")
+        print(f"   Código: {produto.codigo}")
+        print(f"   Quantidade: {produto.quantidade} unidades")
+        print(f"   Valor: R$ {produto.valor:.2f}")
+        print(f"   Local: {produto.local}")
+        print(f"   Fornecedor: {produto.fornecedor}")
+        print(f"   Data: {produto.data}")
+    
+    print("="*50)
+    
