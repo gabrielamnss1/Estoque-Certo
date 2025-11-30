@@ -31,3 +31,31 @@ def processar_funcionario(nome, cargo, horas_extras):
         'Gerente': {'valor_hora': 60.00, 'paga_he': False},
         'Diretor': {'valor_hora': 80.00, 'paga_he': False}
     }
+
+    dados_cargo = tabela_cargos.get(cargo, tabela_cargos['Operário'])
+    valor_hora = dados_cargo['valor_hora']
+    paga_he = dados_cargo['paga_he']
+    
+    salario_bruto = 160 * valor_hora
+    valor_extras = 0.0
+    
+    if paga_he and horas_extras > 0:
+        valor_extras = horas_extras * (valor_hora * 2)
+        salario_bruto += valor_extras
+        
+    desconto_inss = calcular_inss(salario_bruto)
+    base_ir = salario_bruto - desconto_inss
+    desconto_ir = max(0, calcular_ir(base_ir))
+    salario_liquido = salario_bruto - desconto_inss - desconto_ir
+    
+    return {
+        "nome": nome,
+        "cargo": cargo,
+        "valor_hora": valor_hora,
+        "horas_extras": horas_extras,
+        "bruto": salario_bruto,
+        "extras": valor_extras,
+        "inss": desconto_inss,
+        "ir": desconto_ir,
+        "liquido": salario_liquido
+    }
