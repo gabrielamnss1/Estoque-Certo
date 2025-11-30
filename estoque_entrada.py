@@ -155,3 +155,11 @@ def listar_estoque(db_session):
     
     print("="*50)
     
+# ============================================================================
+# FUNÇÃO AUXILIAR PARA TESTES (OPCIONAL)
+# ============================================================================
+if __name__ == "__main__":
+    print(" Testando o Módulo de Entrada de Estoque...\n")
+    estoque_teste = []
+    cadastrar_produto(estoque_teste)
+    listar_estoque(estoque_teste)
