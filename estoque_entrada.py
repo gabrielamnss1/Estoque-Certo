@@ -50,3 +50,39 @@ def cadastrar_produto(db_session):
         except ValueError:
             print(" Erro: Dados inválidos! Pulando este produto.")
             continue
+        
+     # ====================================================================
+        # PASSO 2.2: VERIFICAR SE O PRODUTO JÁ EXISTE (EVITAR DUPLICIDADE)
+        # ====================================================================
+        # Busca no banco de dados pelo código
+        produto_existente = db_session.query(Produto).filter_by(codigo=codigo).first()
+        
+        if produto_existente:
+            # PRODUTO JÁ EXISTE: Apenas soma a quantidade (fusão/atualização)
+            produto_existente.quantidade += quantidade_nova
+            db_session.commit() # Salva a alteração
+            
+            print(f"\n Produto '{produto_existente.nome}' já existe no estoque!")
+            print(f"   Quantidade atualizada: {produto_existente.quantidade} unidades")
+        
+        # ====================================================================
+        # PASSO 2.3: SE NÃO ACHOU, CADASTRAR NOVO PRODUTO
+        # ====================================================================
+        else:
+            # Solicita os dados completos do novo produto
+            print("\n Produto novo! Coletando informações adicionais...")
+            
+            data = input(" Data de fabricação (ex: 26/11/2025): ").strip()
+            fornecedor = input(" Fornecedor: ").strip()
+            local = input(" Local no armazém (ex: Corredor A, Prateleira 3): ").strip()
+            
+            try:
+                valor = float(input(" Valor unitário (R$): "))
+                
+                if valor < 0:
+                    print(" Valor não pode ser negativo! Usando R$ 0,00")
+                    valor = 0.0
+                    
+            except ValueError:
+                print(" Valor inválido! Usando R$ 0,00")
+                valor = 0.0
