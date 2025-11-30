@@ -22,3 +22,12 @@ def calcular_ir(base_calculo):
         return (base_calculo * 0.225) - 662.77
     else:
         return (base_calculo * 0.275) - 896.00
+
+def processar_funcionario(nome, cargo, horas_extras):
+    """Processa os cálculos completos para um funcionário"""
+    tabela_cargos = {
+        'Operário': {'valor_hora': 15.00, 'paga_he': True},
+        'Supervisor': {'valor_hora': 40.00, 'paga_he': True},
+        'Gerente': {'valor_hora': 60.00, 'paga_he': False},
+        'Diretor': {'valor_hora': 80.00, 'paga_he': False}
+    }
