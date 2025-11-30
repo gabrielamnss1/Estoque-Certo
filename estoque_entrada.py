@@ -87,24 +87,25 @@ def cadastrar_produto(db_session):
                 print(" Valor inválido! Usando R$ 0,00")
                 valor = 0.0
 
-            # ====================================================================
-            # PASSO 2.4: CRIAR O OBJETO PRODUTO E PERSISTIR NO BANCO
-            # ====================================================================
-            try:
-                produto = Produto(
-                    codigo=codigo,
-                    nome=nome,
-                    quantidade=quantidade_nova,
-                    valor=valor,
-                    fornecedor=fornecedor,
-                    local=local,
-                    data_fabricacao=data,
-                )
-
-                db_session.add(produto)
-                db_session.commit()
-
-                print(f"\n Produto '{produto.nome}' cadastrado com sucesso! (codigo={produto.codigo})")
-            except Exception as e:
-                # Em caso de erro ao instanciar ou persistir, mostrar aviso e continuar
-                print(f" Erro ao criar/persistir o produto: {e}")
+           # ================================================================
+            # CRIAR O OBJETO DO PRODUTO
+            # ================================================================
+            novo_produto = Produto(
+                codigo=codigo,
+                nome=nome,
+                quantidade=quantidade_nova,
+                data=data,
+                fornecedor=fornecedor,
+                local=local,
+                valor=valor
+            )
+            
+            # Adiciona ao banco de dados
+            db_session.add(novo_produto)
+            db_session.commit()
+            
+            print("\n Produto cadastrado com sucesso!")
+            print(f"   Código: {codigo}")
+            print(f"   Nome: {nome}")
+            print(f"   Quantidade: {quantidade_nova} unidades")
+            print(f"   Valor: R$ {valor:.2f}")
