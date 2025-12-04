@@ -105,3 +105,63 @@ def iniciar_sistema():
             print("5 - Modulo RH (Folha de Pagamento)")
             print("0 - Sair do Sistema")
             print("="*50)
+
+            
+            # ================================================================
+            # CAPTURA DA ESCOLHA DO USUÁRIO
+            # ================================================================
+            # input() pausa o programa e aguarda o usuário digitar algo
+            opcao = input("Digite a opcao desejada: ")
+
+            # ================================================================
+            # PROCESSAMENTO DA OPÇÁO ESCOLHIDA
+            # ================================================================
+            # Estrutura condicional if/elif/else para determinar qual
+            # módulo chamar baseado na opção digitada
+            
+            if opcao == "1":
+                # OPÇÁO 1: Módulo Operacional
+                # Calcula a capacidade de produção baseada em turnos de trabalho
+                operacional.calcular_capacidade()
+                
+            elif opcao == "2":
+                # OPÇÁO 2: Módulo Estoque - Entrada
+                # Cadastra novos produtos que entraram no estoque
+                # Passa db_session para o módulo poder acessar o banco
+                estoque_entrada.cadastrar_produto(db_session)
+                
+            elif opcao == "3":
+                # OPÇÁO 3: Módulo Estoque - Saída
+                # Registra vendas ou saídas de produtos do estoque
+                # Passa db_session para o módulo poder acessar o banco
+                estoque_saida.vender_produto(db_session)
+                
+            elif opcao == "4":
+                # OPÇÁO 4: Módulo Financeiro
+                # Calcula custos operacionais e margem de lucro
+                financeiro.calcular_lucros()
+                
+            elif opcao == "5":
+                # OPÇÁO 5: Módulo RH (Recursos Humanos)
+                # Calcula folha de pagamento dos funcionários
+                rh.calcular_folha_pagamento()
+                
+            elif opcao == "0":
+                # OPÇÁO 0: Sair do Sistema
+                print("\n" + "="*50)
+                print("   Encerrando o sistema... Ate logo!")
+                print("="*50 + "\n")
+                break  # Comando 'break' encerra o loop while e fecha o programa
+                
+            else:
+                # OPÇÁO INVÁLIDA: Nenhuma das opções válidas foi digitada
+                print("\n Opcao invalida! Por favor, tente novamente.")
+    
+    finally:
+        # ====================================================================
+        # BLOCO FINALLY - SEMPRE EXECUTADO
+        # ====================================================================
+        # Este bloco é executado independentemente de ter havido erro ou não
+        # Garante que a conexão com o banco de dados seja fechada corretamente
+        db_session.close()
+        print("\nConexao com banco de dados encerrada.")
