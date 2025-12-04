@@ -70,3 +70,17 @@ def iniciar_sistema():
     - Executa a ação correspondente à opção escolhida
     - Só encerra quando o usuário escolhe a opção '0'
     """
+
+    # ========================================================================
+    # INICIALIZAÇÁO DO BANCO DE DADOS
+    # ========================================================================
+    print(" Inicializando banco de dados...")
+    init_db()  # Chama a função que cria as tabelas caso não existam
+    print(" Banco de dados conectado!")
+    
+    # ========================================================================
+    # CRIAÇÁO DA SESSÁO DO BANCO DE DADOS
+    # ========================================================================
+    # SessionLocal() cria uma sessão que permite executar operações no banco
+    # (consultas, inserções, atualizações, exclusões)
+    db_session = SessionLocal()
