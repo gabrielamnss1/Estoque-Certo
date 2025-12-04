@@ -47,3 +47,26 @@ from src import estoque_saida     # Módulo para saída/venda de produtos
 from src import financeiro        # Módulo para análises financeiras
 from src import rh                # Módulo de Recursos Humanos (RH)
 from src.database import init_db, SessionLocal  # Funções para gerenciar o banco de dados
+
+# ============================================================================
+# FUNÇÁO PRINCIPAL DO SISTEMA
+# ============================================================================
+
+def iniciar_sistema():
+    """
+    Função principal que inicializa e gerencia todo o sistema.
+    
+    RESPONSABILIDADES:
+    1. Inicializar o banco de dados (criar tabelas se necessário)
+    2. Criar uma sessão de conexão com o banco de dados
+    3. Exibir o menu principal em loop contínuo
+    4. Processar a escolha do usuário
+    5. Chamar o módulo correspondente à opção escolhida
+    6. Garantir o fechamento correto da conexão com o banco
+    
+    FUNCIONAMENTO:
+    - O sistema roda em um loop infinito (while True)
+    - A cada iteração, exibe o menu e aguarda entrada do usuário
+    - Executa a ação correspondente à opção escolhida
+    - Só encerra quando o usuário escolhe a opção '0'
+    """
