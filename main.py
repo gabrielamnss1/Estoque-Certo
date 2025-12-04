@@ -165,3 +165,12 @@ def iniciar_sistema():
         # Garante que a conexão com o banco de dados seja fechada corretamente
         db_session.close()
         print("\nConexao com banco de dados encerrada.")
+
+# ============================================================================
+# PONTO DE ENTRADA DO PROGRAMA
+# ============================================================================
+# Este bloco só é executado se o arquivo for rodado diretamente
+# (não quando é importado como módulo em outro arquivo)
+
+if __name__ == "__main__":
+    iniciar_sistema()  # Chama a função principal que inicia todo o sistema
