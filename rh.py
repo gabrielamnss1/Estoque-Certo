@@ -99,3 +99,49 @@ def calcular_folha_pagamento():
     print("\n" + "="*50)
     print("   MODULO 4: RECURSOS HUMANOS - FOLHA DE PAGAMENTO")
     print("="*50)
+    
+    # Lista para armazenar os dados de todos os funcionários processados
+    lista_funcionarios = []
+    
+    # ========================================================================
+    # PASSO 1: DEFINIR QUANTOS FUNCIONÁRIOS SERÁO CALCULADOS
+    # ========================================================================
+    try:
+        qtd = int(input("\n Quantos funcionarios vai calcular? "))
+        
+        # Validação: não aceita valores zero ou negativos
+        if qtd <= 0:
+            print("\n Quantidade deve ser maior que zero!")
+            return
+            
+    except ValueError:
+        # Tratamento de erro para entradas não numéricas
+        print("\n Erro: Digite apenas numeros inteiros!")
+        return
+
+    # ========================================================================
+    # PASSO 2: LOOP PARA CADASTRAR CADA FUNCIONÁRIO
+    # ========================================================================
+    for i in range(qtd):
+        print("\n" + "-"*50)
+        print(f" FUNCIONARIO {i+1} DE {qtd}")
+        print("-"*50)
+        
+        # ====================================================================
+        # PASSO 2.1: COLETAR DADOS BÁSICOS
+        # ====================================================================
+        nome = input(" Nome completo: ").strip()
+        
+        # Validação: nome é obrigatório
+        if not nome:
+            print(" Nome nao pode estar vazio! Pulando este funcionario.")
+            continue  # Pula para a próxima iteração do loop
+        
+        # Exibe as opções de cargos disponíveis
+        print("\n Cargos disponiveis:")
+        print("   1 - Operario")
+        print("   2 - Supervisor")
+        print("   3 - Gerente")
+        print("   4 - Diretor")
+        
+        cargo_opcao = input("Escolha o cargo (1-4): ").strip()
