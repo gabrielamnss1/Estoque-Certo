@@ -145,3 +145,39 @@ def calcular_folha_pagamento():
         print("   4 - Diretor")
         
         cargo_opcao = input("Escolha o cargo (1-4): ").strip()
+
+        # ====================================================================
+        # PASSO 2.2: DEFINIR SALÁRIO BASE E ELEGIBILIDADE PARA HORA EXTRA
+        # ====================================================================
+        # Cada cargo tem um valor/hora diferente e regras diferentes para HE
+        valor_hora = 0
+        paga_hora_extra = False
+        cargo = ""
+        
+        # Estrutura condicional para definir valores conforme o cargo escolhido
+        if cargo_opcao == "1":
+            cargo = "Operario"
+            valor_hora = 15.00
+            paga_hora_extra = True  # Operário TEM DIREITO a hora extra
+            
+        elif cargo_opcao == "2":
+            cargo = "Supervisor"
+            valor_hora = 40.00
+            paga_hora_extra = True  # Supervisor TEM DIREITO a hora extra
+            
+        elif cargo_opcao == "3":
+            cargo = "Gerente"
+            valor_hora = 60.00
+            paga_hora_extra = False  # Gerente NÁO RECEBE hora extra (cargo de confiança)
+            
+        elif cargo_opcao == "4":
+            cargo = "Diretor"
+            valor_hora = 80.00
+            paga_hora_extra = False  # Diretor NÁO RECEBE hora extra (cargo de confiança)
+            
+        else:
+            # Opção inválida: usa valores padrão
+            print(" Cargo invalido! Usando Operario como padrao.")
+            cargo = "Operario"
+            valor_hora = 15.00
+            paga_hora_extra = True
