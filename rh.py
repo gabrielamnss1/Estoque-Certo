@@ -198,3 +198,27 @@ def calcular_folha_pagamento():
         else:
             # Cargos de confiança (gerente/diretor) não recebem hora extra
             print(f" {cargo} nao recebe hora extra (cargo de confianca).")
+
+        # ====================================================================
+        # PASSO 2.3: CALCULAR SALÁRIO BRUTO E DESCONTOS (USANDO FUNÇÕES PURAS)
+        # ====================================================================
+        # Chama a função pura que realiza todos os cálculos de folha
+        resultado = processar_funcionario(nome, cargo, horas_extras)
+        
+        # Extrai os valores calculados para exibição
+        salario_bruto = resultado['bruto']
+        desconto_inss = resultado['inss']
+        desconto_ir = resultado['ir']
+        salario_liquido = resultado['liquido']
+        valor_extras = resultado['extras']
+        valor_hora = resultado['valor_hora']
+        
+        # Exibe os resultados calculados
+        print(f"\n Salario bruto (antes dos descontos): R$ {salario_bruto:.2f}")
+        print(f" INSS: R$ {desconto_inss:.2f}")
+        print(f" IR: R$ {desconto_ir:.2f}")
+        print(f"\n Salario liquido (a receber): R$ {salario_liquido:.2f}")
+        
+        # Adiciona o funcionário à lista para exibir no relatório final
+        lista_funcionarios.append(resultado)
+        print("\n Funcionario cadastrado com sucesso!")
