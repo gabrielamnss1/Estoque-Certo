@@ -230,3 +230,42 @@ def calcular_folha_pagamento():
     # key=lambda x: x['nome'] define que a ordenação será pelo campo 'nome'
     # lambda x: x['nome'] é uma função anônima que retorna o nome do funcionário
     lista_funcionarios.sort(key=lambda x: x['nome'])
+    
+
+    # ========================================================================
+    # PASSO 4: EXIBIR RELATÓRIO COMPLETO DA FOLHA DE PAGAMENTO
+    # ========================================================================
+    print("\n" + "="*50)
+    print("   FOLHA DE PAGAMENTO (Ordenada Alfabeticamente)")
+    print("="*50)
+    
+    # Variáveis acumuladoras para totalização
+    total_bruto = 0
+    total_inss = 0
+    total_ir = 0
+    total_liquido = 0
+    
+    # Exibir dados detalhados de cada funcionário
+    # enumerate(lista, 1) começa a contagem do 1 em vez de 0
+    for i, f in enumerate(lista_funcionarios, 1):
+        print(f"\n{i}. {f['nome'].upper()}")
+        print(f"   Cargo: {f['cargo']}")
+        print(f"   Valor/hora: R$ {f['valor_hora']:.2f}")
+        
+        # Exibe horas extras apenas se houver
+        if f['horas_extras'] > 0:
+            print(f"   Horas extras: {f['horas_extras']:.1f}h (R$ {f['extras']:.2f})")
+        
+        # Exibe os valores financeiros alinhados à direita (>10)
+        print(f"   Salario Bruto:   R$ {f['bruto']:>10.2f}")
+        print(f"   Desconto INSS:   R$ {f['inss']:>10.2f}")
+        print(f"   Desconto IR:     R$ {f['ir']:>10.2f}")
+        print(f"   {'='*35}")
+        print(f"   Salario Liquido: R$ {f['liquido']:>10.2f}")
+        print("-"*50)
+        
+        # Acumula os totais para exibir no final
+        total_bruto += f['bruto']
+        total_inss += f['inss']
+        total_ir += f['ir']
+        total_liquido += f['liquido']
