@@ -79,3 +79,23 @@ def processar_funcionario(nome, cargo, horas_extras):
         "ir": desconto_ir,
         "liquido": salario_liquido
     }
+
+def calcular_folha_pagamento():
+    """
+    Calcula a folha de pagamento completa com descontos de INSS e IR.
+    
+    Esta função demonstra conceitos de:
+    - Cálculo de impostos progressivos (faixas diferentes de alíquota)
+    - Estruturas condicionais complexas (if/elif/else encadeados)
+    - Manipulação de listas de dicionários
+    - Ordenação de dados (sort com lambda)
+    - Totalização e agregação de dados
+    - Cálculo de horas extras (valor dobrado)
+    
+    MODO: Interativo para console
+    """
+
+    
+    print("\n" + "="*50)
+    print("   MODULO 4: RECURSOS HUMANOS - FOLHA DE PAGAMENTO")
+    print("="*50)
