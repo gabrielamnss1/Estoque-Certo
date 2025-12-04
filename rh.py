@@ -299,3 +299,10 @@ def calcular_folha_pagamento():
     print(f"   (Incluindo encargos patronais estimados em 27,65%)")
     print(f"   R$ {custo_total_empresa:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
     print("="*50)
+
+# ============================================================================
+# FUNÇÁO AUXILIAR PARA TESTES (OPCIONAL)
+# ============================================================================
+if __name__ == "__main__":
+    print("Testando o Módulo de RH...\n")
+    calcular_folha_pagamento()
