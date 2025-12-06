@@ -67,7 +67,8 @@ Quatro-Cantos/
 │   └── rh.py                   # Recursos humanos
 │
 ├── docs/
-│   └── index.html              # Documentação completa
+│   ├── index.html              # Documentação completa
+│   └── fluxograma.html         # Fluxograma interativo do sistema
 │
 ├── .env                        # Configurações (não versionado)
 ├── .gitignore                  # Arquivos ignorados
@@ -219,7 +220,8 @@ A documentação inclui:
 ## Suporte
 
 - **Issues**: https://github.com/gabrielamnss1/Quatro-Cantos/issues
-- **Documentação**: Consulte `docs/index.html`
+- **Documentação HTML**: Abra `docs/index.html` no navegador
+- **Fluxograma**: Abra `docs/fluxograma.html` no navegador
 
 ## Licença
 
@@ -228,6 +230,38 @@ Este projeto foi desenvolvido para fins educacionais e de gestão empresarial.
 ## Autores
 
 Sistema desenvolvido pela equipe Quatro Cantos.
+
+---
+
+## Equipe
+
+### Informações do Projeto
+
+- **Disciplina**: Lógica de Programação
+- **Professor**: Washington Luis Souza Anunciação
+- **Data de Início**: 22 de novembro de 2025
+
+### Integrantes
+
+| # | Nome Completo | Email |
+|---|---------------|-------|
+| 1 | Gabriela M. N. Silva | gabriela.m.silva@ba.estudante.senai.br |
+| 2 | Cristiano Silva Santos | cristiano.s.santos@ba.estudante.senai.br |
+| 3 | Joel Macena Costa | joel.c@ba.estudante.senai.br |
+
+### Responsabilidades
+
+- **Gabriela M. N. Silva**: Desenvolvedora principal, autora da conta GitHub, integração com repositório remoto
+- **Cristiano Silva Santos**: Desenvolvedor, contribuidor do projeto
+- **Joel Macena Costa**: Desenvolvedor, contribuidor do projeto
+
+### Contribuições
+
+Todos os integrantes contribuem para:
+- Implementação de funcionalidades
+- Testes e validação
+- Documentação
+- Revisão de código
 
 ---
 
