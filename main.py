@@ -70,7 +70,7 @@ def iniciar_sistema():
     - Executa a ação correspondente à opção escolhida
     - Só encerra quando o usuário escolhe a opção '0'
     """
-
+    
     # ========================================================================
     # INICIALIZAÇÁO DO BANCO DE DADOS
     # ========================================================================
@@ -105,7 +105,6 @@ def iniciar_sistema():
             print("5 - Modulo RH (Folha de Pagamento)")
             print("0 - Sair do Sistema")
             print("="*50)
-
             
             # ================================================================
             # CAPTURA DA ESCOLHA DO USUÁRIO
