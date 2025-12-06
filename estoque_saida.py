@@ -14,7 +14,7 @@
 # - Tratamento de pedidos parciais
 # ============================================================================
 
-from src.database import Produto
+from database import Produto
 from sqlalchemy import func
 
 # ============================================================================
