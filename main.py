@@ -25,28 +25,15 @@
 # ============================================================================
 
 # ============================================================================
-# IMPORTAÇÕES DE BIBLIOTECAS PADRÁO DO PYTHON
-# ============================================================================
-import sys  # Módulo para manipulação de sistema e paths
-import os   # Módulo para operações com sistema operacional
-
-# ============================================================================
-# CONFIGURAÇÁO DO CAMINHO DE IMPORTAÇÁO
-# ============================================================================
-# Adiciona o diretório pai ao path de busca do Python
-# Isso permite que o Python encontre os módulos na pasta 'src'
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-# ============================================================================
 # IMPORTAÇÁO DOS MÓDULOS CUSTOMIZADOS DO SISTEMA
 # ============================================================================
 # Cada módulo representa uma funcionalidade específica do sistema
-from src import operacional       # Módulo para cálculos operacionais e produtivos
-from src import estoque_entrada   # Módulo para entrada de produtos no estoque
-from src import estoque_saida     # Módulo para saída/venda de produtos
-from src import financeiro        # Módulo para análises financeiras
-from src import rh                # Módulo de Recursos Humanos (RH)
-from src.database import init_db, SessionLocal  # Funções para gerenciar o banco de dados
+import operacional       # Módulo para cálculos operacionais e produtivos
+import estoque_entrada   # Módulo para entrada de produtos no estoque
+import estoque_saida     # Módulo para saída/venda de produtos
+import financeiro        # Módulo para análises financeiras
+import rh                # Módulo de Recursos Humanos (RH)
+from database import init_db, SessionLocal  # Funções para gerenciar o banco de dados
 
 # ============================================================================
 # FUNÇÁO PRINCIPAL DO SISTEMA
@@ -70,7 +57,7 @@ def iniciar_sistema():
     - Executa a ação correspondente à opção escolhida
     - Só encerra quando o usuário escolhe a opção '0'
     """
-
+    
     # ========================================================================
     # INICIALIZAÇÁO DO BANCO DE DADOS
     # ========================================================================
@@ -105,7 +92,6 @@ def iniciar_sistema():
             print("5 - Modulo RH (Folha de Pagamento)")
             print("0 - Sair do Sistema")
             print("="*50)
-
             
             # ================================================================
             # CAPTURA DA ESCOLHA DO USUÁRIO

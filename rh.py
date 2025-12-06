@@ -118,7 +118,7 @@ def calcular_folha_pagamento():
         # Tratamento de erro para entradas não numéricas
         print("\n Erro: Digite apenas numeros inteiros!")
         return
-
+    
     # ========================================================================
     # PASSO 2: LOOP PARA CADASTRAR CADA FUNCIONÁRIO
     # ========================================================================
@@ -145,7 +145,7 @@ def calcular_folha_pagamento():
         print("   4 - Diretor")
         
         cargo_opcao = input("Escolha o cargo (1-4): ").strip()
-
+        
         # ====================================================================
         # PASSO 2.2: DEFINIR SALÁRIO BASE E ELEGIBILIDADE PARA HORA EXTRA
         # ====================================================================
@@ -181,7 +181,7 @@ def calcular_folha_pagamento():
             cargo = "Operario"
             valor_hora = 15.00
             paga_hora_extra = True
-
+        
         # ====================================================================
         # PASSO 2.2.1: COLETAR HORAS EXTRAS (SE APLICÁVEL)
         # ====================================================================
@@ -198,7 +198,7 @@ def calcular_folha_pagamento():
         else:
             # Cargos de confiança (gerente/diretor) não recebem hora extra
             print(f" {cargo} nao recebe hora extra (cargo de confianca).")
-
+        
         # ====================================================================
         # PASSO 2.3: CALCULAR SALÁRIO BRUTO E DESCONTOS (USANDO FUNÇÕES PURAS)
         # ====================================================================
@@ -222,7 +222,7 @@ def calcular_folha_pagamento():
         # Adiciona o funcionário à lista para exibir no relatório final
         lista_funcionarios.append(resultado)
         print("\n Funcionario cadastrado com sucesso!")
-
+    
     # ========================================================================
     # PASSO 3: ORDENAR A LISTA POR NOME (ORDEM ALFABÉTICA)
     # ========================================================================
@@ -231,7 +231,6 @@ def calcular_folha_pagamento():
     # lambda x: x['nome'] é uma função anônima que retorna o nome do funcionário
     lista_funcionarios.sort(key=lambda x: x['nome'])
     
-
     # ========================================================================
     # PASSO 4: EXIBIR RELATÓRIO COMPLETO DA FOLHA DE PAGAMENTO
     # ========================================================================
@@ -269,7 +268,7 @@ def calcular_folha_pagamento():
         total_inss += f['inss']
         total_ir += f['ir']
         total_liquido += f['liquido']
-
+    
     # ========================================================================
     # PASSO 5: EXIBIR TOTALIZADORES (RESUMO GERAL)
     # ========================================================================
@@ -285,8 +284,7 @@ def calcular_folha_pagamento():
     print(f"{'='*50}")
     print(f" Total Liquido (a pagar):       R$ {total_liquido:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
     print("="*50)
-
-
+    
     # ========================================================================
     # PASSO 6: CALCULAR CUSTO TOTAL DA EMPRESA (INCLUINDO ENCARGOS)
     # ========================================================================
@@ -300,9 +298,10 @@ def calcular_folha_pagamento():
     print(f"   R$ {custo_total_empresa:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
     print("="*50)
 
+
 # ============================================================================
 # FUNÇÁO AUXILIAR PARA TESTES (OPCIONAL)
 # ============================================================================
 if __name__ == "__main__":
-    print("Testando o Módulo de RH...\n")
+    print("🧪 Testando o Módulo de RH...\n")
     calcular_folha_pagamento()
