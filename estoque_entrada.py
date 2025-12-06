@@ -12,7 +12,7 @@
 # - Validação e tratamento de duplicidade
 # ============================================================================
 
-from src.database import Produto
+from database import Produto
 
 # ============================================================================
 # FUNÇÕES DE LÓGICA PURA (PARA API E CLI)

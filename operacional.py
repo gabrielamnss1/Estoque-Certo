@@ -18,13 +18,13 @@
 
 def calcular_metricas_capacidade(turnos):
     """Calcula as métricas de capacidade baseada nos turnos"""
-    capacidade_por_turno = 1666
-    capacidade_diaria = capacidade_por_turno * turnos
-    capacidade_mensal = capacidade_diaria * 30
-    capacidade_anual = capacidade_mensal * 12
+    capacidade_por_turno = 1666 # unidades por turno
+    capacidade_diaria = capacidade_por_turno * turnos # unidades por dia
+    capacidade_mensal = capacidade_diaria * 30 # unidades por mês
+    capacidade_anual = capacidade_mensal * 12 # unidades por ano
     
-    capacidade_maxima_diaria = capacidade_por_turno * 3
-    diferenca = capacidade_maxima_diaria - capacidade_diaria
+    capacidade_maxima_diaria = capacidade_por_turno * 3 # unidades por dia (3 turnos)
+    diferenca = capacidade_maxima_diaria - capacidade_diaria # unidades ociosas por dia
     percentual_uso = (capacidade_diaria / capacidade_maxima_diaria) * 100
     
     return {
