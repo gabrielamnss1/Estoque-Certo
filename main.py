@@ -1,9 +1,8 @@
-# ============================================================================
 # ARQUIVO: main.py
-# SISTEMA DE GESTÁO - QUATRO CANTOS
+# SISTEMA DE GESTÃO - QUATRO CANTOS
 # ============================================================================
 #
-# DESCRIÇÁO:
+# DESCRIÇÃO:
 # Este é o arquivo principal do sistema em modo console/terminal.
 # Ele gerencia o menu interativo e permite que o usuário navegue entre
 # os diferentes módulos do sistema através de opções numeradas.
@@ -24,8 +23,11 @@
 #
 # ============================================================================
 
+# Configurar encoding UTF-8 para Windows
+import config_encoding
+
 # ============================================================================
-# IMPORTAÇÁO DOS MÓDULOS CUSTOMIZADOS DO SISTEMA
+# IMPORTAÇÃO DOS MÓDULOS CUSTOMIZADOS DO SISTEMA
 # ============================================================================
 # Cada módulo representa uma funcionalidade específica do sistema
 import operacional       # Módulo para cálculos operacionais e produtivos
@@ -59,14 +61,14 @@ def iniciar_sistema():
     """
     
     # ========================================================================
-    # INICIALIZAÇÁO DO BANCO DE DADOS
+    # INICIALIZAÇÃO DO BANCO DE DADOS
     # ========================================================================
-    print(" Inicializando banco de dados...")
+    print("Inicializando banco de dados...")
     init_db()  # Chama a função que cria as tabelas caso não existam
-    print(" Banco de dados conectado!")
+    print("Banco de dados conectado!")
     
     # ========================================================================
-    # CRIAÇÁO DA SESSÁO DO BANCO DE DADOS
+    # CRIAÇÃO DA SESSÃO DO BANCO DE DADOS
     # ========================================================================
     # SessionLocal() cria uma sessão que permite executar operações no banco
     # (consultas, inserções, atualizações, exclusões)
@@ -79,17 +81,17 @@ def iniciar_sistema():
         # Este loop mantém o sistema rodando até o usuário decidir sair
         while True:
             # ================================================================
-            # EXIBIÇÁO DO MENU PRINCIPAL
+            # EXIBIÇÃO DO MENU PRINCIPAL
             # ================================================================
             print("\n" + "="*50)
             print("   QUATRO CANTOS")
-            print("   Sistema de Gestao Empresarial")
+            print("   Sistema de Gestão Empresarial")
             print("="*50)
-            print("1 - Modulo Operacional (Simular Capacidade de Producao)")
-            print("2 - Modulo Estoque (Cadastrar Entrada de Produtos)")
-            print("3 - Modulo Estoque (Registrar Saida/Venda)")
-            print("4 - Modulo Financeiro (Calcular Custos e Lucros)")
-            print("5 - Modulo RH (Folha de Pagamento)")
+            print("1 - Módulo Operacional (Simular Capacidade de Produção)")
+            print("2 - Módulo Estoque (Cadastrar Entrada de Produtos)")
+            print("3 - Módulo Estoque (Registrar Saída/Venda)")
+            print("4 - Módulo Financeiro (Calcular Custos e Lucros)")
+            print("5 - Módulo RH (Folha de Pagamento)")
             print("0 - Sair do Sistema")
             print("="*50)
             
@@ -97,51 +99,51 @@ def iniciar_sistema():
             # CAPTURA DA ESCOLHA DO USUÁRIO
             # ================================================================
             # input() pausa o programa e aguarda o usuário digitar algo
-            opcao = input("Digite a opcao desejada: ")
+            opcao = input("Digite a opção desejada: ")
 
             # ================================================================
-            # PROCESSAMENTO DA OPÇÁO ESCOLHIDA
+            # PROCESSAMENTO DA OPÇÃO ESCOLHIDA
             # ================================================================
             # Estrutura condicional if/elif/else para determinar qual
             # módulo chamar baseado na opção digitada
             
             if opcao == "1":
-                # OPÇÁO 1: Módulo Operacional
+                # OPÇÃO 1: Módulo Operacional
                 # Calcula a capacidade de produção baseada em turnos de trabalho
                 operacional.calcular_capacidade()
                 
             elif opcao == "2":
-                # OPÇÁO 2: Módulo Estoque - Entrada
+                # OPÇÃO 2: Módulo Estoque - Entrada
                 # Cadastra novos produtos que entraram no estoque
                 # Passa db_session para o módulo poder acessar o banco
-                estoque_entrada.cadastrar_produtos(db_session)
+                estoque_entrada.cadastrar_produto(db_session)
                 
             elif opcao == "3":
-                # OPÇÁO 3: Módulo Estoque - Saída
+                # OPÇÃO 3: Módulo Estoque - Saída
                 # Registra vendas ou saídas de produtos do estoque
                 # Passa db_session para o módulo poder acessar o banco
                 estoque_saida.vender_produto(db_session)
                 
             elif opcao == "4":
-                # OPÇÁO 4: Módulo Financeiro
+                # OPÇÃO 4: Módulo Financeiro
                 # Calcula custos operacionais e margem de lucro
                 financeiro.calcular_lucros()
                 
             elif opcao == "5":
-                # OPÇÁO 5: Módulo RH (Recursos Humanos)
+                # OPÇÃO 5: Módulo RH (Recursos Humanos)
                 # Calcula folha de pagamento dos funcionários
                 rh.calcular_folha_pagamento()
                 
             elif opcao == "0":
-                # OPÇÁO 0: Sair do Sistema
+                # OPÇÃO 0: Sair do Sistema
                 print("\n" + "="*50)
-                print("   Encerrando o sistema... Ate logo!")
+                print("   Encerrando o sistema... Até logo!")
                 print("="*50 + "\n")
                 break  # Comando 'break' encerra o loop while e fecha o programa
                 
             else:
-                # OPÇÁO INVÁLIDA: Nenhuma das opções válidas foi digitada
-                print("\n Opcao invalida! Por favor, tente novamente.")
+                # OPÇÃO INVÁLIDA: Nenhuma das opções válidas foi digitada
+                print("\nOpção inválida! Por favor, tente novamente.")
     
     finally:
         # ====================================================================
@@ -150,7 +152,7 @@ def iniciar_sistema():
         # Este bloco é executado independentemente de ter havido erro ou não
         # Garante que a conexão com o banco de dados seja fechada corretamente
         db_session.close()
-        print("\nConexao com banco de dados encerrada.")
+        print("\nConexão com banco de dados encerrada.")
 
 # ============================================================================
 # PONTO DE ENTRADA DO PROGRAMA
