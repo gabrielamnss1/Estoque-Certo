@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 ﻿# estoque_entrada.py
-=======
 # -*- coding: utf-8 -*-
 # estoque_entrada.py
->>>>>>> 59c242a (Atualizando o código)
 # ============================================================================
 # MÓDULO 1: ESTOQUE - ENTRADA DE PRODUTOS
 # ============================================================================
@@ -184,8 +181,4 @@ cadastrar_produto = cadastrar_produtos
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     print(" Testando o Módulo de Entrada de Estoque...\n")
-=======
-    print("Testando o Módulo de Entrada de Estoque...\n")
->>>>>>> 59c242a (Atualizando o código)
