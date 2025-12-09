@@ -1,3 +1,4 @@
+
 # rh.py
 # ============================================================================
 # MÓDULO 4: RECURSOS HUMANOS - FOLHA DE PAGAMENTO
@@ -45,43 +46,29 @@ def calcular_ir(base_calculo):
 
 def processar_funcionario(nome, cargo, horas_extras):
     """Processa os cálculos completos para um funcionário"""
-
     tabela_cargos = {
-        'Operário': {'valor_hora': 15.00, 'paga_he': True, 'salario_fixo': None},
-        'Supervisor': {'valor_hora': 40.00, 'paga_he': True, 'salario_fixo': None},
-        'Gerente': {'valor_hora': None, 'paga_he': False, 'salario_fixo': 12000.00},
-        'Diretor': {'valor_hora': None, 'paga_he': False, 'salario_fixo': 20000.00},
+        'Operário': {'valor_hora': 15.00, 'paga_he': True},
+        'Supervisor': {'valor_hora': 40.00, 'paga_he': True},
+        'Gerente': {'valor_hora': 60.00, 'paga_he': False},
+        'Diretor': {'valor_hora': 80.00, 'paga_he': False}
     }
-
-    dados = tabela_cargos.get(cargo)
-
-    # Se cargo inválido, usar Operário
-    if not dados:
-        dados = tabela_cargos['Operário']
-        cargo = "Operário"
-
-    salario_fixo = dados['salario_fixo']
-    valor_hora = dados['valor_hora']
-    paga_he = dados['paga_he']
-
-    # Se tem salário fixo, ignora valor_hora
-    if salario_fixo:
-        salario_bruto = salario_fixo
-        valor_extras = 0.0  # cargos de confiança não têm HE
-    else:
-        # salário baseado em hora
-        salario_bruto = 160 * valor_hora
-        valor_extras = 0.0
-        if paga_he and horas_extras > 0:
-            valor_extras = horas_extras * (valor_hora * 2)
-            salario_bruto += valor_extras
-
-    # Cálculos de descontos
+    
+    dados_cargo = tabela_cargos.get(cargo, tabela_cargos['Operário'])
+    valor_hora = dados_cargo['valor_hora']
+    paga_he = dados_cargo['paga_he']
+    
+    salario_bruto = 160 * valor_hora
+    valor_extras = 0.0
+    
+    if paga_he and horas_extras > 0:
+        valor_extras = horas_extras * (valor_hora * 2)
+        salario_bruto += valor_extras
+        
     desconto_inss = calcular_inss(salario_bruto)
     base_ir = salario_bruto - desconto_inss
     desconto_ir = max(0, calcular_ir(base_ir))
     salario_liquido = salario_bruto - desconto_inss - desconto_ir
-
+    
     return {
         "nome": nome,
         "cargo": cargo,
@@ -104,61 +91,61 @@ def calcular_folha_pagamento():
     - Manipulação de listas de dicionários
     - Ordenação de dados (sort com lambda)
     - Totalização e agregação de dados
-    - Cálculo de horas extras (valor dobrado)
+    - Cálculo de horas extras (valor dobrado - 100% de acréscimo)
     
     MODO: Interativo para console
     """
 
     
-    print("\n" + "="*50)
-    print("   MODULO 4: RECURSOS HUMANOS - FOLHA DE PAGAMENTO")
-    print("="*50)
+    print("\n" + "="*70)
+    print("   MÓDULO 4: RECURSOS HUMANOS - FOLHA DE PAGAMENTO")
+    print("="*70)
     
     # Lista para armazenar os dados de todos os funcionários processados
     lista_funcionarios = []
     
     # ========================================================================
-    # PASSO 1: DEFINIR QUANTOS FUNCIONÁRIOS SERÁO CALCULADOS
+    # PASSO 1: DEFINIR QUANTOS FUNCIONÁRIOS SERÃO CALCULADOS
     # ========================================================================
     try:
-        qtd = int(input("\n Quantos funcionarios vai calcular? "))
+        qtd = int(input("\nQuantos funcionários vai calcular? "))
         
         # Validação: não aceita valores zero ou negativos
         if qtd <= 0:
-            print("\n Quantidade deve ser maior que zero!")
+            print("\nQuantidade deve ser maior que zero!")
             return
             
     except ValueError:
         # Tratamento de erro para entradas não numéricas
-        print("\n Erro: Digite apenas numeros inteiros!")
+        print("\nErro: Digite apenas números inteiros!")
         return
     
     # ========================================================================
     # PASSO 2: LOOP PARA CADASTRAR CADA FUNCIONÁRIO
     # ========================================================================
     for i in range(qtd):
-        print("\n" + "-"*50)
-        print(f" FUNCIONARIO {i+1} DE {qtd}")
-        print("-"*50)
+        print("\n" + "="*70)
+        print(f"   FUNCIONÁRIO {i+1} DE {qtd}")
+        print("="*70)
         
         # ====================================================================
         # PASSO 2.1: COLETAR DADOS BÁSICOS
         # ====================================================================
-        nome = input(" Nome completo: ").strip()
+        nome = input("\n Nome completo: ").strip()
         
         # Validação: nome é obrigatório
         if not nome:
-            print(" Nome nao pode estar vazio! Pulando este funcionario.")
+            print("\n Nome não pode estar vazio! Pulando este funcionário.")
             continue  # Pula para a próxima iteração do loop
         
         # Exibe as opções de cargos disponíveis
-        print("\n Cargos disponiveis:")
-        print("   1 - Operario")
-        print("   2 - Supervisor")
-        print("   3 - Gerente")
-        print("   4 - Diretor")
+        print("\n Cargos disponíveis:")
+        print("   1 - Operário      (R$ 15,00/h - Recebe Hora Extra)")
+        print("   2 - Supervisor    (R$ 40,00/h - Recebe Hora Extra)")
+        print("   3 - Gerente       (R$ 60,00/h - Cargo de Confiança)")
+        print("   4 - Diretor       (R$ 80,00/h - Cargo de Confiança)")
         
-        cargo_opcao = input("Escolha o cargo (1-4): ").strip()
+        cargo_opcao = input("\n Escolha o cargo (1-4): ").strip()
         
         # ====================================================================
         # PASSO 2.2: DEFINIR SALÁRIO BASE E ELEGIBILIDADE PARA HORA EXTRA
@@ -170,29 +157,33 @@ def calcular_folha_pagamento():
         
         # Estrutura condicional para definir valores conforme o cargo escolhido
         if cargo_opcao == "1":
-            cargo = "Operario"
+            cargo = "Operário"
             valor_hora = 15.00
             paga_hora_extra = True  # Operário TEM DIREITO a hora extra
+            print("\n✓ Cargo: Operário - Elegível para Horas Extras")
             
         elif cargo_opcao == "2":
             cargo = "Supervisor"
             valor_hora = 40.00
             paga_hora_extra = True  # Supervisor TEM DIREITO a hora extra
+            print("\n✓ Cargo: Supervisor - Elegível para Horas Extras")
             
         elif cargo_opcao == "3":
             cargo = "Gerente"
             valor_hora = 60.00
             paga_hora_extra = False  # Gerente NÁO RECEBE hora extra (cargo de confiança)
+            print("\n Cargo: Gerente - Cargo de Confiança (sem hora extra)")
             
         elif cargo_opcao == "4":
             cargo = "Diretor"
             valor_hora = 80.00
             paga_hora_extra = False  # Diretor NÁO RECEBE hora extra (cargo de confiança)
+            print("\n Cargo: Diretor - Cargo de Confiança (sem hora extra)")
             
         else:
             # Opção inválida: usa valores padrão
-            print(" Cargo invalido! Usando Operario como padrao.")
-            cargo = "Operario"
+            print("\n  Cargo inválido! Usando Operário como padrão.")
+            cargo = "Operário"
             valor_hora = 15.00
             paga_hora_extra = True
         
@@ -201,17 +192,21 @@ def calcular_folha_pagamento():
         # ====================================================================
         horas_extras = 0
         if paga_hora_extra:
+            print("\n HORAS EXTRAS (Acréscimo de 100% sobre o valor/hora):")
             try:
-                horas_extras = float(input(" Horas extras trabalhadas no mes: "))
+                horas_extras = float(input("   Digite as horas extras trabalhadas no mês: "))
                 if horas_extras < 0:
-                    print(" Valor negativo ajustado para 0")
+                    print("     Valor negativo ajustado para 0")
                     horas_extras = 0
+                elif horas_extras > 0:
+                    valor_he = horas_extras * (valor_hora * 2)
+                    print(f"   {horas_extras:.1f}h × R$ {valor_hora * 2:.2f} = R$ {valor_he:.2f}")
             except ValueError:
-                print(" Valor invalido! Considerando 0 horas extras.")
+                print("    Valor inválido! Considerando 0 horas extras.")
                 horas_extras = 0
         else:
             # Cargos de confiança (gerente/diretor) não recebem hora extra
-            print(f" {cargo} nao recebe hora extra (cargo de confianca).")
+            print(f"\n   {cargo} não recebe hora extra (cargo de confiança).")
         
         # ====================================================================
         # PASSO 2.3: CALCULAR SALÁRIO BRUTO E DESCONTOS (USANDO FUNÇÕES PURAS)
@@ -227,15 +222,29 @@ def calcular_folha_pagamento():
         valor_extras = resultado['extras']
         valor_hora = resultado['valor_hora']
         
-        # Exibe os resultados calculados
-        print(f"\n Salario bruto (antes dos descontos): R$ {salario_bruto:.2f}")
-        print(f" INSS: R$ {desconto_inss:.2f}")
-        print(f" IR: R$ {desconto_ir:.2f}")
-        print(f"\n Salario liquido (a receber): R$ {salario_liquido:.2f}")
+        # Exibe os resultados calculados com layout profissional
+        print("\n" + "-"*70)
+        print("   CÁLCULO DA REMUNERAÇÃO")
+        print("-"*70)
+        
+        salario_base = 160 * valor_hora
+        print(f"   Salário Base (160h):        R$ {salario_base:>12.2f}")
+        
+        if valor_extras > 0:
+            print(f"   Horas Extras (+100%):       R$ {valor_extras:>12.2f}")
+        
+        print(f"   {'─'*50}")
+        print(f"   Salário Bruto:              R$ {salario_bruto:>12.2f}")
+        print(f"\n  DESCONTOS:")
+        print(f"   INSS:                      -R$ {desconto_inss:>12.2f}")
+        print(f"   IR:                        -R$ {desconto_ir:>12.2f}")
+        print(f"   {'─'*50}")
+        print(f"   Salário Líquido:         R$ {salario_liquido:>12.2f}")
+        print("-"*70)
         
         # Adiciona o funcionário à lista para exibir no relatório final
         lista_funcionarios.append(resultado)
-        print("\n Funcionario cadastrado com sucesso!")
+        print("\n Funcionário cadastrado com sucesso!")
     
     # ========================================================================
     # PASSO 3: ORDENAR A LISTA POR NOME (ORDEM ALFABÉTICA)
@@ -248,34 +257,40 @@ def calcular_folha_pagamento():
     # ========================================================================
     # PASSO 4: EXIBIR RELATÓRIO COMPLETO DA FOLHA DE PAGAMENTO
     # ========================================================================
-    print("\n" + "="*50)
-    print("   FOLHA DE PAGAMENTO (Ordenada Alfabeticamente)")
-    print("="*50)
+    print("\n" + "="*70)
+    print("   FOLHA DE PAGAMENTO - RELATÓRIO COMPLETO")
+    print("   (Ordenada Alfabeticamente)")
+    print("="*70)
     
     # Variáveis acumuladoras para totalização
     total_bruto = 0
     total_inss = 0
     total_ir = 0
     total_liquido = 0
+    total_horas_extras = 0
+    total_valor_extras = 0
     
     # Exibir dados detalhados de cada funcionário
     # enumerate(lista, 1) começa a contagem do 1 em vez de 0
     for i, f in enumerate(lista_funcionarios, 1):
-        print(f"\n{i}. {f['nome'].upper()}")
-        print(f"   Cargo: {f['cargo']}")
-        print(f"   Valor/hora: R$ {f['valor_hora']:.2f}")
+        print(f"\n┌─ {i}. {f['nome'].upper()} " + "─"*(65 - len(f['nome'])))
+        print(f"│  Cargo: {f['cargo']}")
+        print(f"│  Valor/hora: R$ {f['valor_hora']:.2f}")
         
-        # Exibe horas extras apenas se houver
+        # Exibe horas extras apenas se houver - com destaque
         if f['horas_extras'] > 0:
-            print(f"   Horas extras: {f['horas_extras']:.1f}h (R$ {f['extras']:.2f})")
+            print(f"│  Horas Extras: {f['horas_extras']:.1f}h × R$ {f['valor_hora'] * 2:.2f} = R$ {f['extras']:.2f}")
+            total_horas_extras += f['horas_extras']
+            total_valor_extras += f['extras']
         
-        # Exibe os valores financeiros alinhados à direita (>10)
-        print(f"   Salario Bruto:   R$ {f['bruto']:>10.2f}")
-        print(f"   Desconto INSS:   R$ {f['inss']:>10.2f}")
-        print(f"   Desconto IR:     R$ {f['ir']:>10.2f}")
-        print(f"   {'='*35}")
-        print(f"   Salario Liquido: R$ {f['liquido']:>10.2f}")
-        print("-"*50)
+        # Exibe os valores financeiros alinhados
+        print(f"│")
+        print(f"│  Salário Bruto:              R$ {f['bruto']:>12.2f}")
+        print(f"│  (-) INSS:                   R$ {f['inss']:>12.2f}")
+        print(f"│  (-) IR:                     R$ {f['ir']:>12.2f}")
+        print(f"│  {'─'*50}")
+        print(f"│  Salário Líquido:         R$ {f['liquido']:>12.2f}")
+        print("└" + "─"*68)
         
         # Acumula os totais para exibir no final
         total_bruto += f['bruto']
@@ -286,18 +301,23 @@ def calcular_folha_pagamento():
     # ========================================================================
     # PASSO 5: EXIBIR TOTALIZADORES (RESUMO GERAL)
     # ========================================================================
-    print("\n" + "="*50)
-    print("   RESUMO GERAL DA FOLHA")
-    print("="*50)
-    print(f" Total de funcionarios: {len(lista_funcionarios)}")
+    print("\n" + "="*70)
+    print("   RESUMO GERAL DA FOLHA DE PAGAMENTO")
+    print("="*70)
+    print(f"\n   Total de funcionários: {len(lista_funcionarios)}")
+    
+    if total_horas_extras > 0:
+        print(f"    Total de Horas Extras: {total_horas_extras:.1f}h")
+        print(f"    Valor Total de Horas Extras: R$ {total_valor_extras:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
     
     # Formatação monetária brasileira
-    print(f"\n Total Bruto (antes descontos): R$ {total_bruto:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f" Total INSS:                    R$ {total_inss:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f" Total IR:                      R$ {total_ir:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f"{'='*50}")
-    print(f" Total Liquido (a pagar):       R$ {total_liquido:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print("="*50)
+    print(f"\n   {'─'*65}")
+    print(f"   Salário Bruto Total:          R$ {total_bruto:>15,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f"   Total INSS:                  -R$ {total_inss:>15,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f"   Total IR:                    -R$ {total_ir:>15,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f"   {'═'*65}")
+    print(f"   Total Líquido (a pagar):   R$ {total_liquido:>15,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print("="*70)
     
     # ========================================================================
     # PASSO 6: CALCULAR CUSTO TOTAL DA EMPRESA (INCLUINDO ENCARGOS)
@@ -307,15 +327,19 @@ def calcular_folha_pagamento():
     encargos = total_bruto * 0.2765
     custo_total_empresa = total_liquido + total_inss + total_ir + encargos
     
-    print(f"\n CUSTO TOTAL PARA A EMPRESA:")
-    print(f"   (Incluindo encargos patronais estimados em 27,65%)")
-    print(f"   R$ {custo_total_empresa:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print("="*50)
+    print(f"\n   {'─'*65}")
+    print(f" CUSTO TOTAL PARA A EMPRESA:")
+    print(f"   (Inclui encargos patronais: FGTS, INSS Patronal, PIS - 27,65%)")
+    print(f"\n   Encargos Patronais:           R$ {encargos:>15,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f"   {'─'*65}")
+    print(f" Custo Total da Folha:      R$ {custo_total_empresa:>15,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print("="*70)
+    print("")
 
 
 # ============================================================================
-# FUNÇÁO AUXILIAR PARA TESTES (OPCIONAL)
+# FUNÇÃO AUXILIAR PARA TESTES (OPCIONAL)
 # ============================================================================
 if __name__ == "__main__":
-    print("🧪 Testando o Módulo de RH...\n")
+    print(" Testando o Módulo de RH...\n")
     calcular_folha_pagamento()
