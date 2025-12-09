@@ -45,29 +45,43 @@ def calcular_ir(base_calculo):
 
 def processar_funcionario(nome, cargo, horas_extras):
     """Processa os cálculos completos para um funcionário"""
+
     tabela_cargos = {
-        'Operário': {'valor_hora': 15.00, 'paga_he': True},
-        'Supervisor': {'valor_hora': 40.00, 'paga_he': True},
-        'Gerente': {'valor_hora': 60.00, 'paga_he': False},
-        'Diretor': {'valor_hora': 80.00, 'paga_he': False}
+        'Operário': {'valor_hora': 15.00, 'paga_he': True, 'salario_fixo': None},
+        'Supervisor': {'valor_hora': 40.00, 'paga_he': True, 'salario_fixo': None},
+        'Gerente': {'valor_hora': None, 'paga_he': False, 'salario_fixo': 12000.00},
+        'Diretor': {'valor_hora': None, 'paga_he': False, 'salario_fixo': 20000.00},
     }
-    
-    dados_cargo = tabela_cargos.get(cargo, tabela_cargos['Operário'])
-    valor_hora = dados_cargo['valor_hora']
-    paga_he = dados_cargo['paga_he']
-    
-    salario_bruto = 160 * valor_hora
-    valor_extras = 0.0
-    
-    if paga_he and horas_extras > 0:
-        valor_extras = horas_extras * (valor_hora * 2)
-        salario_bruto += valor_extras
-        
+
+    dados = tabela_cargos.get(cargo)
+
+    # Se cargo inválido, usar Operário
+    if not dados:
+        dados = tabela_cargos['Operário']
+        cargo = "Operário"
+
+    salario_fixo = dados['salario_fixo']
+    valor_hora = dados['valor_hora']
+    paga_he = dados['paga_he']
+
+    # Se tem salário fixo, ignora valor_hora
+    if salario_fixo:
+        salario_bruto = salario_fixo
+        valor_extras = 0.0  # cargos de confiança não têm HE
+    else:
+        # salário baseado em hora
+        salario_bruto = 160 * valor_hora
+        valor_extras = 0.0
+        if paga_he and horas_extras > 0:
+            valor_extras = horas_extras * (valor_hora * 2)
+            salario_bruto += valor_extras
+
+    # Cálculos de descontos
     desconto_inss = calcular_inss(salario_bruto)
     base_ir = salario_bruto - desconto_inss
     desconto_ir = max(0, calcular_ir(base_ir))
     salario_liquido = salario_bruto - desconto_inss - desconto_ir
-    
+
     return {
         "nome": nome,
         "cargo": cargo,

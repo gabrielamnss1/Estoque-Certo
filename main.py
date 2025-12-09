@@ -114,7 +114,7 @@ def iniciar_sistema():
                 # OPÇÁO 2: Módulo Estoque - Entrada
                 # Cadastra novos produtos que entraram no estoque
                 # Passa db_session para o módulo poder acessar o banco
-                estoque_entrada.cadastrar_produto(db_session)
+                estoque_entrada.cadastrar_produtos(db_session)
                 
             elif opcao == "3":
                 # OPÇÁO 3: Módulo Estoque - Saída
