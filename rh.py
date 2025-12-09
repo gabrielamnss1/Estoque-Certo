@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # rh.py
 # ============================================================================
 # MÓDULO 4: RECURSOS HUMANOS - FOLHA DE PAGAMENTO
