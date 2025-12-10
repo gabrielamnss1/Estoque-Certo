@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # estoque_saida.py
 # ============================================================================
 # MÓDULO 2: ESTOQUE - SAÍDA DE PRODUTOS (VENDAS)
@@ -44,7 +45,7 @@ def registrar_saida_produto(db_session, nome_buscado, qtd_desejada):
         }
 
     saldo_atual = produto.quantidade
-    valor_unitario = produto.valor
+    valor_unitario = produto.valor_unitario
 
     resultado = {
         "produto": produto,
@@ -97,5 +98,120 @@ def registrar_saida_produto(db_session, nome_buscado, qtd_desejada):
     return resultado
 
 
+# ============================================================================
+# FUNÇÕES INTERATIVAS (CLI)
+# ============================================================================
+
+def vender_produto(db_session):
+    """
+    Registra vendas/saídas de produtos do estoque (Interface Console).
+    """
+    print("\n" + "="*70)
+    print("   MÓDULO DE ESTOQUE - SAÍDA DE PRODUTOS (VENDAS)")
+    print("="*70)
+    
+    # Listar produtos disponíveis
+    print("\nPRODUTOS DISPONÍVEIS EM ESTOQUE:")
+    print("─"*70)
+    
+    produtos = db_session.query(Produto).filter(Produto.quantidade > 0).all()
+    
+    if not produtos:
+        print("\n[AVISO] Nenhum produto disponível em estoque!")
+        print("   Cadastre produtos primeiro no Módulo de Entrada.")
+        return
+    
+    for i, p in enumerate(produtos, 1):
+        valor_estoque = p.quantidade * p.valor_unitario
+        print(f"{i}. {p.nome}")
+        print(f"   Código: {p.codigo} | Qtd: {p.quantidade} un | R$ {p.valor_unitario:.2f}/un | Total: R$ {valor_estoque:.2f}")
+    
+    print("─"*70)
+    
+    # Continuar vendendo
+    total_vendas = 0.0
+    qtd_vendas = 0
+    
+    while True:
+        print("\n" + "═"*70)
+        nome_produto = input("\nDigite o nome do produto (ou 'sair' para finalizar): ").strip()
+        
+        if nome_produto.lower() == 'sair':
+            break
+        
+        if not nome_produto:
+            print("[ERRO] Nome não pode estar vazio!")
+            continue
+        
+        try:
+            qtd_desejada = int(input("Quantidade desejada: "))
+            if qtd_desejada <= 0:
+                print("[ERRO] Quantidade deve ser maior que zero!")
+                continue
+        except ValueError:
+            print("[ERRO] Digite apenas números inteiros!")
+            continue
+        
+        # Chama a função pura
+        try:
+            resultado = registrar_saida_produto(db_session, nome_produto, qtd_desejada)
+            
+            print("\n" + "─"*70)
+            
+            if resultado["status"] == "sucesso":
+                print("[SUCESSO] VENDA REALIZADA COM SUCESSO!")
+                print("─"*70)
+                print(f"   Produto: {resultado['produto'].nome}")
+                print(f"   Quantidade Vendida: {resultado['qtd_vendida']} unidades")
+                print(f"   Valor Unitário: R$ {resultado['valor_unitario']:.2f}")
+                print(f"   Valor Total da Venda: R$ {resultado['valor_venda']:.2f}")
+                print(f"   Saldo Anterior: {resultado['saldo_anterior']} unidades")
+                print(f"   Saldo Atual: {resultado['saldo_restante']} unidades")
+                print("─"*70)
+                total_vendas += resultado['valor_venda']
+                qtd_vendas += 1
+                
+            elif resultado["status"] == "parcial":
+                print("[AVISO] ATENDIMENTO PARCIAL")
+                print("─"*70)
+                print(f"   Produto: {resultado['produto'].nome}")
+                print(f"   Quantidade Solicitada: {resultado['qtd_solicitada']} unidades")
+                print(f"   Quantidade Disponível: {resultado['saldo_anterior']} unidades")
+                print(f"   Quantidade Vendida: {resultado['qtd_vendida']} unidades")
+                print(f"   Valor Unitário: R$ {resultado['valor_unitario']:.2f}")
+                print(f"   Valor Total da Venda: R$ {resultado['valor_venda']:.2f}")
+                print(f"   [AVISO] Saldo Insuficiente! Produto agora está ESGOTADO.")
+                print("─"*70)
+                total_vendas += resultado['valor_venda']
+                qtd_vendas += 1
+                
+            else:  # erro
+                print("[ERRO] ERRO NA VENDA")
+                print("─"*70)
+                print(f"   {resultado.get('mensagem', 'Erro desconhecido')}")
+                if resultado.get('tipo') == 'esgotado':
+                    print(f"   Produto '{nome_produto}' está sem estoque!")
+                print("─"*70)
+                
+        except Exception as e:
+            print(f"\n[ERRO] Erro ao processar venda: {e}")
+        
+        # Perguntar se deseja continuar
+        continuar = input("\n>> Registrar outra venda? (s/n): ").strip().lower()
+        if continuar != 's':
+            break
+    
+    # Resumo final
+    if qtd_vendas > 0:
+        print("\n" + "═"*70)
+        print("   RESUMO DAS VENDAS")
+        print("═"*70)
+        print(f"   Quantidade de Vendas: {qtd_vendas}")
+        print(f"   Faturamento Total: R$ {total_vendas:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+        print("═"*70)
+    else:
+        print("\n[AVISO] Nenhuma venda foi registrada.")
+
+
 if __name__ == "__main__":
-    print(" Testando o Módulo de Saída de Estoque...\n")
+    print("Testando o Módulo de Saída de Estoque...\n")

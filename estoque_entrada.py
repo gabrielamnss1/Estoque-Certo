@@ -1,4 +1,6 @@
 ﻿# estoque_entrada.py
+# -*- coding: utf-8 -*-
+# estoque_entrada.py
 # ============================================================================
 # MÓDULO 1: ESTOQUE - ENTRADA DE PRODUTOS
 # ============================================================================
@@ -18,7 +20,7 @@ from database import Produto
 # FUNÇÕES DE LÓGICA PURA (PARA API E CLI)
 # ============================================================================
 
-def registrar_entrada_produto(db_session, codigo, nome, quantidade, valor=0.0, data=None, fornecedor=None, local=None):
+def registrar_entrada_produto(db_session, codigo, nome, quantidade, valor_unitario=0.0, data=None, fornecedor=None, local=None):
     """
     Registra a entrada de um produto no estoque (Lógica Pura).
     
@@ -36,9 +38,9 @@ def registrar_entrada_produto(db_session, codigo, nome, quantidade, valor=0.0, d
     if produto:
         # Atualizar produto existente
         produto.quantidade += quantidade # Incrementa quantidade
-        produto.valor = valor if valor > 0 else produto.valor # Atualiza valor se fornecido
+        produto.valor_unitario = valor_unitario if valor_unitario > 0 else produto.valor_unitario # Atualiza valor se fornecido
         if data:
-            produto.data = data
+            produto.data_fabricacao = data
         if fornecedor:
             produto.fornecedor = fornecedor
         if local:
@@ -52,10 +54,10 @@ def registrar_entrada_produto(db_session, codigo, nome, quantidade, valor=0.0, d
             codigo=codigo,
             nome=nome,
             quantidade=quantidade,
-            valor=valor,
-            data=data or "",
+            valor_unitario=valor_unitario,
+            data_fabricacao=data or "",
             fornecedor=fornecedor or "",
-            local=local or ""
+            local_armazem=local or ""
         )
         
         db_session.add(novo_produto)
@@ -71,81 +73,111 @@ def cadastrar_produtos(db_session):
     """
     Cadastra múltiplos produtos no estoque (Interface Console).
     """
-    print("\n" + "="*50)
-    print("   MÓDULO 1: ENTRADA DE ESTOQUE")
-    print("="*50)
+    print("\n" + "="*70)
+    print("   MÓDULO DE ESTOQUE - ENTRADA DE PRODUTOS")
+    print("="*70)
     
     try:
-        qtd_produtos = int(input("\n Quantos produtos deseja cadastrar? "))
+        qtd_produtos = int(input("\nQuantos produtos deseja cadastrar? "))
         if qtd_produtos > 10:
-            print(" Aviso: Limitado a 10 produtos conforme regra do sistema.")
+            print("\n[AVISO] Limitado a 10 produtos conforme regra do sistema.")
             qtd_produtos = 10
         if qtd_produtos <= 0:
-            print(" Quantidade deve ser maior que zero!")
+            print("\n[ERRO] Quantidade deve ser maior que zero!")
             return
     except ValueError:
-        print(" Erro: Digite apenas números inteiros!")
+        print("\n[ERRO] Digite apenas números inteiros!")
         return
     
     produtos_novos = 0
     produtos_atualizados = 0
     
     for i in range(qtd_produtos):
-        print("\n" + "="*50)
-        print(f" PRODUTO {i+1} DE {qtd_produtos}")
-        print("="*50)
+        print("\n" + "═"*70)
+        print(f"   PRODUTO {i+1} DE {qtd_produtos}")
+        print("═"*70)
         
-        codigo = input(" Código do produto: ").strip()
+        codigo = input("\nCódigo do produto: ").strip()
         if not codigo:
-            print(" Código não pode estar vazio! Pulando este produto.")
+            print("[ERRO] Código não pode estar vazio! Pulando este produto.")
             continue
         
-        nome = input(" Nome do produto: ").strip()
+        nome = input("Nome do produto: ").strip()
         if not nome:
-            print(" Nome não pode estar vazio! Pulando este produto.")
+            print("[ERRO] Nome não pode estar vazio! Pulando este produto.")
             continue
         
         try:
-            quantidade = int(input(" Quantidade: "))
+            quantidade = int(input("Quantidade: "))
             if quantidade <= 0:
-                print(" Quantidade deve ser maior que zero! Pulando este produto.")
+                print("[ERRO] Quantidade deve ser maior que zero! Pulando este produto.")
                 continue
         except ValueError:
-            print(" Erro: Quantidade inválida! Pulando este produto.")
+            print("[ERRO] Quantidade inválida! Pulando este produto.")
             continue
         
         try:
-            valor = float(input(" Valor unitário (R$): "))
+            valor = float(input("Valor unitário (R$): "))
+            if valor < 0:
+                print("[AVISO] Valor negativo ajustado para R$ 0.00")
+                valor = 0.0
         except ValueError:
-            print(" Aviso: Valor inválido, será definido como R$ 0.00")
+            print("[AVISO] Valor inválido, será definido como R$ 0.00")
             valor = 0.0
         
-        data = input(" Data de fabricação (opcional): ").strip()
-        fornecedor = input(" Fornecedor (opcional): ").strip()
-        local = input(" Local de armazenamento (opcional): ").strip()
+        data = input("Data de fabricação (opcional): ").strip()
+        fornecedor = input("Fornecedor (opcional): ").strip()
+        local = input("Local de armazenamento (opcional): ").strip()
         
         # Chama a função pura
         try:
             produto, is_novo = registrar_entrada_produto(
-                db_session, codigo, nome, quantidade, valor, data, fornecedor, local
+                db_session, codigo, nome, quantidade, valor_unitario=valor, data=data, fornecedor=fornecedor, local=local
             )
             
+            valor_total = quantidade * valor
+            
             if is_novo:
-                print(f"\n ✓ Produto '{produto.nome}' cadastrado com sucesso!")
+                print("\n" + "─"*70)
+                print("[SUCESSO] PRODUTO CADASTRADO!")
+                print("─"*70)
+                print(f"   Código: {produto.codigo}")
+                print(f"   Nome: {produto.nome}")
+                print(f"   Quantidade: {produto.quantidade} unidades")
+                print(f"   Valor Unitário: R$ {produto.valor_unitario:.2f}")
+                print(f"   Valor Total: R$ {valor_total:.2f}")
+                if fornecedor:
+                    print(f"   Fornecedor: {produto.fornecedor}")
+                if local:
+                    print(f"   Local: {produto.local_armazem}")
+                print("─"*70)
                 produtos_novos += 1
             else:
-                print(f"\n ✓ Produto '{produto.nome}' atualizado! Nova quantidade: {produto.quantidade}")
+                print("\n" + "─"*70)
+                print("[SUCESSO] PRODUTO ATUALIZADO!")
+                print("─"*70)
+                print(f"   Nome: {produto.nome}")
+                print(f"   Quantidade Anterior: {produto.quantidade - quantidade} unidades")
+                print(f"   Quantidade Adicionada: {quantidade} unidades")
+                print(f"   Nova Quantidade Total: {produto.quantidade} unidades")
+                print(f"   Valor Unitário: R$ {produto.valor_unitario:.2f}")
+                print("─"*70)
                 produtos_atualizados += 1
                 
         except Exception as e:
-            print(f" Erro ao cadastrar produto: {e}")
+            print(f"\n[ERRO] Erro ao cadastrar produto: {e}")
     
-    print("\n" + "="*50)
+    print("\n" + "═"*70)
     print("   RESUMO DO CADASTRO")
-    print("="*50)
-    print(f"\n Produtos novos cadastrados: {produtos_novos}")
-    print(f" Produtos atualizados: {produtos_atualizados}")
-    print("="*50)
+    print("═"*70)
+    print(f"   Produtos novos cadastrados: {produtos_novos}")
+    print(f"   Produtos atualizados: {produtos_atualizados}")
+    print(f"   Total processado: {produtos_novos + produtos_atualizados}")
+    print("═"*70)
+
+
+# Alias para manter compatibilidade com main.py
+cadastrar_produto = cadastrar_produtos
 
 
 if __name__ == "__main__":
